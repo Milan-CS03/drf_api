@@ -11,8 +11,7 @@ class UserProfileManager(BaseUserManager):
         """New user creation"""
         if not email:
             raise ValueError("please provide email address")
-        email = self.normalize_email(email)
-        user = self.model(email, name)
+        user = self.model(email=self.normalize_email(email), name=name)
         user.set_password(password)
         user.save(using=self.db)
 
@@ -30,6 +29,7 @@ class UserProfileManager(BaseUserManager):
 # Create your models here.
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """DB model for system users"""
+    #id = models.IntegerField(auto_created=True, unique=True, primary_key=True)
     email = models.EmailField(max_length=250, unique=True)
     name = models.CharField(max_length=250)
     is_active = models.BooleanField(default=True)
